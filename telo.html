@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EsterCoin Clicker</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #balance {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        #clickButton {
+            font-size: 18px;
+            padding: 15px 30px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        #clickButton:active {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="balance">0 EsterCoins</div>
+    <button id="clickButton">Click me!</button>
+
+    <script>
+        let balance = 0;
+        const tg = window.Telegram.WebApp;
+        const balanceElement = document.getElementById('balance');
+        const clickButton = document.getElementById('clickButton');
+
+        tg.expand();
+
+        clickButton.addEventListener('click', () => {
+            balance++;
+            balanceElement.textContent = `${balance} EsterCoins`;
+            tg.HapticFeedback.impactOccurred('medium');
+        });
+
+        tg.onEvent('viewportChanged', () => {
+            if (!tg.isExpanded) {
+                tg.sendData(JSON.stringify({balance}));
+            }
+        });
+    </script>
+</body>
+</html>
